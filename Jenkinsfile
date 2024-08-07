@@ -20,23 +20,23 @@ pipeline {
     COWSAY_PORT = '80'
   }
 
-  stages {
-    stage('Checkout') {
-      steps {
-        script {
-          def branchName = "master"
-          git branch: "${branchName}", credentialsId: "${env.SSH_CREDENTIALS_ID}", url: "${env.GIT_URL}"
+  
+    stages {
+      stage('Checkout') {
+        steps {
+          script {
+            git branch: "${env.BRANCH_NAME}", credentialsId: "${env.SSH_CREDENTIALS_ID}", url: "${env.GIT_URL}"
+          }
         }
       }
-    }
 
-    stage('Build') {
-      steps {
-        script {
-          sh "docker build -t cowsay:${env.IMAGE_TAG} ."
+      stage('Build') {
+        steps {
+          script {
+            sh "docker build -t cowsay:${env.IMAGE_TAG} ."
+          }
         }
       }
-    }
 
     stage('Push') {
       steps {
